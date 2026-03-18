@@ -16,4 +16,10 @@ public class Constants {
     public static final String PASSWORD_TOO_WEAK = "Şifrə təhlükəsizlik tələblərinə cavab vermir!";
     public static final String PASSWORDS_DO_NOT_MATCH = "Şifrələr bir-biri ilə eyni deyil!";
     public static final String OTP_INVALID_OR_EXPIRED = "OTP kodu yanlış və ya müddəti bitmişdir!";
+
+    public static final String USER_CREATED_TOPIC = "user-created-topic";
+
+    public static final String ERROR_MESSAGE="Error message";
+    public static final String SUCCESS_MESSAGE="success message";
+
 }

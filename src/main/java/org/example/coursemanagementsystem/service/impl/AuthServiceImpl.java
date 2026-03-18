@@ -2,10 +2,7 @@ package org.example.coursemanagementsystem.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.example.coursemanagementsystem.dto.kafka.UserCreatedEvent;
-import org.example.coursemanagementsystem.dto.request.LoginRequest;
-import org.example.coursemanagementsystem.dto.request.PasswordUpdateRequest;
-import org.example.coursemanagementsystem.dto.request.StudentRegistrationRequest;
-import org.example.coursemanagementsystem.dto.request.TeacherRegistrationRequest;
+import org.example.coursemanagementsystem.dto.request.*;
 import org.example.coursemanagementsystem.dto.response.AuthResponse;
 import org.example.coursemanagementsystem.entity.Student;
 import org.example.coursemanagementsystem.entity.Teacher;
@@ -16,7 +13,7 @@ import org.example.coursemanagementsystem.mapper.TeacherMapper;
 import org.example.coursemanagementsystem.repository.StudentRepository;
 import org.example.coursemanagementsystem.repository.TeacherRepository;
 import org.example.coursemanagementsystem.repository.UserRepository;
-import org.example.coursemanagementsystem.security.JwtTokenProvider;
+import org.example.coursemanagementsystem.security.JwtUtils;
 import org.example.coursemanagementsystem.service.AuthService;
 import org.example.coursemanagementsystem.service.EmailService;
 import org.example.coursemanagementsystem.service.OtpService;
@@ -26,6 +23,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.example.coursemanagementsystem.util.Constants.USER_CREATED_TOPIC;
+
+
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
@@ -34,14 +34,12 @@ public class AuthServiceImpl implements AuthService {
     private final StudentRepository studentRepository;
     private final TeacherRepository teacherRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtTokenProvider tokenProvider;
+    private final JwtUtils jwtUtils;
     private final OtpService otpService;
     private final EmailService emailService;
     private final StudentMapper studentMapper;
     private final TeacherMapper teacherMapper;
     private final KafkaTemplate<String, UserCreatedEvent> kafkaTemplate;
-
-    private static final String USER_CREATED_TOPIC = "user-created-topic";
 
     @Override
     @Transactional
@@ -92,15 +90,19 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public void registerTeacher(TeacherRegistrationRequest request) {
+        // Email unikal yoxlanışı
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new EmailAlreadyExistsException("Bu email artıq qeydiyyatdan keçib");
         }
+        // FİN kod unikal yoxlanışı
         if (userRepository.existsByFinCode(request.getFinCode())) {
             throw new FinCodeAlreadyExistsException("Bu FİN kod artıq istifadə olunur");
         }
 
+        // OTP yarat və saxla
         String otp = otpService.generateAndSaveOtp(request.getEmail());
 
+        // User obyekti yarat
         User user = User.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(otp))
@@ -111,12 +113,15 @@ public class AuthServiceImpl implements AuthService {
                 .build();
         user = userRepository.save(user);
 
+        // Teacher obyekti yarat və əlaqələndir
         Teacher teacher = teacherMapper.toEntity(request);
         teacher.setUser(user);
         teacherRepository.save(teacher);
 
+        // OTP-ni email ilə göndər
         emailService.sendOtpEmail(request.getEmail(), otp);
 
+        // Kafka event-i göndər
         UserCreatedEvent event = new UserCreatedEvent(
                 user.getId(),
                 user.getEmail(),
@@ -137,8 +142,8 @@ public class AuthServiceImpl implements AuthService {
             throw new InvalidPasswordException("Email və ya şifrə yanlışdır");
         }
 
-        String accessToken = tokenProvider.generateAccessToken(user);
-        String refreshToken = tokenProvider.generateRefreshToken(user);
+        String accessToken = jwtUtils.generateAccessToken(user);
+        String refreshToken = jwtUtils.generateRefreshToken(user);
 
         return AuthResponse.builder()
                 .accessToken(accessToken)
@@ -151,15 +156,15 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponse refreshToken(String refreshToken) {
-        if (!tokenProvider.validateToken(refreshToken)) {
+        if (!jwtUtils.validateToken(refreshToken)) {
             throw new InvalidPasswordException("Yeniləmə tokeni etibarsızdır");
         }
-        String email = tokenProvider.getEmailFromToken(refreshToken);
+        String email = jwtUtils.getEmailFromToken(refreshToken);
         User user = userRepository.findByEmailAndIsActiveTrue(email)
                 .orElseThrow(() -> new UserNotFoundException("İstifadəçi tapılmadı"));
 
-        String newAccessToken = tokenProvider.generateAccessToken(user);
-        String newRefreshToken = tokenProvider.generateRefreshToken(user);
+        String newAccessToken = jwtUtils.generateAccessToken(user);
+        String newRefreshToken = jwtUtils.generateRefreshToken(user);
 
         return AuthResponse.builder()
                 .accessToken(newAccessToken)
@@ -173,8 +178,8 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void logout(String refreshToken) {
         // Refresh token-i qara siyahıya əlavə etmək olar (məsələn, Redis-də)
-        // tokenProvider.blacklistToken(refreshToken);
-        // Client tərəfdə token silinir.
+        // jwtUtils.blacklistToken(refreshToken);  // Əgər belə bir metod varsa
+        // Client tərəfdə token silinir, buna görə boş buraxıla bilər.
     }
 
     @Override
@@ -212,6 +217,6 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public Long getUserIdFromToken(String token) {
-        return tokenProvider.getUserIdFromToken(token);
+        return jwtUtils.getUserIdFromToken(token);
     }
 }
