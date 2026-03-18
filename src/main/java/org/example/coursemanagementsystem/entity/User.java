@@ -4,14 +4,13 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.example.coursemanagementsystem.util.Role;
-import jakarta.persistence.Id;
 
 @Entity
 @Table(name = "users")
 @Getter
 @Setter
-@Data
-@NoArgsConstructor @AllArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class User {
@@ -37,8 +36,4 @@ public class User {
 
     @Builder.Default
     boolean isActive = true;
-
-
 }
-
-

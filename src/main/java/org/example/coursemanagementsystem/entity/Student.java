@@ -1,9 +1,6 @@
 package org.example.coursemanagementsystem.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-
-import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,17 +10,15 @@ import lombok.Setter;
 @Setter
 public class Student {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     String name;
     String surname;
     String studentNumber;
+    String profileImage;
 
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "user_id")
     User user;
-
-    String profileImage;
 }

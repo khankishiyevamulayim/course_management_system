@@ -9,12 +9,10 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TeacherProfileResponse {
-
     Long id;
     String name;
     String surname;
     String email;
     String specialization;
     String profileImage;
-
 }

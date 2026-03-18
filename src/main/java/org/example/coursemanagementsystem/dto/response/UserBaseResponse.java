@@ -10,12 +10,10 @@ import org.example.coursemanagementsystem.util.Role;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserBaseResponse {
-
     Long id;
     String email;
     String finCode;
     Role role;
     Boolean isFirstLogin;
     Boolean isActive;
-
 }

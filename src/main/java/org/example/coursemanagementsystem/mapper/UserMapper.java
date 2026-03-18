@@ -8,8 +8,6 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
-
     UserBaseResponse toBaseResponse(User user);
-
     List<UserBaseResponse> toBaseResponseList(List<User> users);
 }

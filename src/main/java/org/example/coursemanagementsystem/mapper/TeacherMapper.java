@@ -10,6 +10,7 @@ import org.mapstruct.Mapping;
 public interface TeacherMapper {
 
     @Mapping(target = "user", ignore = true)
+    @Mapping(target = "id", ignore = true)
     Teacher toEntity(TeacherRegistrationRequest request);
 
     @Mapping(source = "user.email", target = "email")
