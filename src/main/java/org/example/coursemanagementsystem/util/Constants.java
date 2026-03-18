@@ -15,5 +15,5 @@ public class Constants {
 
     public static final String PASSWORD_TOO_WEAK = "Şifrə təhlükəsizlik tələblərinə cavab vermir!";
     public static final String PASSWORDS_DO_NOT_MATCH = "Şifrələr bir-biri ilə eyni deyil!";
-
+    public static final String OTP_INVALID_OR_EXPIRED = "OTP kodu yanlış və ya müddəti bitmişdir!";
 }

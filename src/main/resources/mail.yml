@@ -1,0 +1,12 @@
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: khankishiyevamulayim@gmail.com
+    password: 2006
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true

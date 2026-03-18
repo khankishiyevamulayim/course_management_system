@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/userdb_dev
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: dev-email@gmail.com
+    password: dev-password
+  data:
+    redis:
+      host: localhost
+      port: 6379
+jwt:
+  secret: devSecretKey
+logging:
+  level:
+    com.example: DEBUG

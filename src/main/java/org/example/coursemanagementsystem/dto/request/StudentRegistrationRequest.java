@@ -30,6 +30,6 @@ public class StudentRegistrationRequest {
     )
     String finCode;
 
-    @NotBlank(message = "Tələbə nömrəsi mütləqdir")
+    @Pattern(regexp = "\\d{6}", message = "Tələbə nömrəsi 6 rəqəmdən ibarət olmalıdır")
     String studentNumber;
 }

@@ -1,18 +1,15 @@
 spring:
-  application:
-    name: course-management-system
+  config:
+    import:
+      - database.yml
+      - redis.yml
+      - mail.yml
+      - jwt.yml
 
-  datasource:
-    url: jdbc:postgresql://localhost:5432/course_management_db
-    username: course_management_db
-    password: "1234"
-    driver-class-name: org.postgresql.Driver
+server:
+  port: 8081
 
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
+jwt:
+    secret: your-256-bit-secret-key-here-min-32-chars
+    access-token-expiration: 3600000      # 1 saat (ms)
+    refresh-token-expiration: 86400000

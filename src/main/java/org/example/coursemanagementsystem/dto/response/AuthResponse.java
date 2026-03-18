@@ -18,7 +18,7 @@ public class AuthResponse {
 
     Role role;
 
-    Boolean isFirstLogin;
+    boolean isFirstLogin;
 
     Long userId;
 }

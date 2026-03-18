@@ -1,0 +1,4 @@
+jwt:
+  secret: mySecretKeyForJWTTokenGenerationAndValidation2024
+  access-token-expiration: 3600000
+  refresh-token-expiration: 86400000
