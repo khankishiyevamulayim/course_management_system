@@ -18,24 +18,25 @@ public class TeacherController {
     private final TeacherService teacherService;
 
     @GetMapping("/profile/{teacherId}")
-    @PreAuthorize("hasRole('TEACHER') and #teacherId == principal.id or hasRole('ADMIN')")
-    public ResponseEntity<ApiResponse<TeacherProfileResponse>> getTeacherProfile(@PathVariable Long teacherId) {
-        TeacherProfileResponse response = teacherService.getTeacherProfile(teacherId);
-        return ResponseEntity.ok(ApiResponse.success(response));
+    @PreAuthorize("(hasRole('TEACHER') and #teacherId == principal) or hasRole('ADMIN')")
+    public ResponseEntity<ApiResponse<TeacherProfileResponse>> getTeacherProfile(
+            @PathVariable Long teacherId) {
+        return ResponseEntity.ok(ApiResponse.success(
+                teacherService.getTeacherProfile(teacherId)));
     }
 
     @GetMapping("/specialization/{specialization}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ApiResponse<List<TeacherProfileResponse>>> getTeachersBySpecialization(@PathVariable String specialization) {
-        List<TeacherProfileResponse> response = teacherService.getTeachersBySpecialization(specialization);
-        return ResponseEntity.ok(ApiResponse.success(response));
+    @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT', 'TEACHER')")
+    public ResponseEntity<ApiResponse<List<TeacherProfileResponse>>> getTeachersBySpecialization(
+            @PathVariable String specialization) {
+        return ResponseEntity.ok(ApiResponse.success(
+                teacherService.getTeachersBySpecialization(specialization)));
     }
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<List<TeacherProfileResponse>>> getAllTeachers() {
-        List<TeacherProfileResponse> response = teacherService.getAllTeachers();
-        return ResponseEntity.ok(ApiResponse.success(response));
+        return ResponseEntity.ok(ApiResponse.success(teacherService.getAllTeachers()));
     }
 
     @DeleteMapping("/{teacherId}")

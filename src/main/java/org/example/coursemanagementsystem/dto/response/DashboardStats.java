@@ -6,10 +6,10 @@ import lombok.Data;
 @Builder
 @Data
 public class DashboardStats {
-    private long totalUsers;
-    private long activeUsers;
-    private long inactiveUsers;
-    private long totalStudents;
-    private long totalTeachers;
-    private long totalAdmins;
+    long totalUsers;
+    long activeUsers;
+    long inactiveUsers;
+    long totalStudents;
+    long totalTeachers;
+    long totalAdmins;
 }

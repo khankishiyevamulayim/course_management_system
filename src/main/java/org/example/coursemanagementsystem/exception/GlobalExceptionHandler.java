@@ -36,6 +36,42 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.error(ex.getMessage()));
     }
 
+    @ExceptionHandler(PasswordMismatchException.class)
+    public ResponseEntity<ApiResponse<String>> handlePasswordMismatchException(
+            PasswordMismatchException ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ApiResponse.error(ex.getMessage()));
+    }
+    @ExceptionHandler(StudentNotFoundException.class)
+    public ResponseEntity<ApiResponse<String>> handleStudentNotFoundException(
+            StudentNotFoundException ex) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(ApiResponse.error(ex.getMessage()));
+    }
+
+    @ExceptionHandler(TeacherNotFoundException.class)
+    public ResponseEntity<ApiResponse<String>> handleTeacherNotFoundException(
+            TeacherNotFoundException ex) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(ApiResponse.error(ex.getMessage()));
+    }
+    @ExceptionHandler(InvalidRoleException.class)
+    public ResponseEntity<ApiResponse<String>> handleInvalidRole(InvalidRoleException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ApiResponse.error(ex.getMessage()));
+    }
+
+    @ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity<ApiResponse<String>> handleInvalidTokenException(
+            InvalidTokenException ex) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(ApiResponse.error(ex.getMessage()));
+    }
+
     @ExceptionHandler(FinCodeAlreadyExistsException.class)
     public ResponseEntity<ApiResponse<String>> handleFinCodeAlreadyExists(
             FinCodeAlreadyExistsException ex, HttpServletRequest request) {

@@ -4,9 +4,19 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.example.coursemanagementsystem.util.Role;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "users")
+@Table(
+        name = "users",
+        indexes = {
+                @Index(name = "idx_user_email",   columnList = "email"),
+                @Index(name = "idx_user_fin_code", columnList = "fin_code")
+        }
+)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -14,6 +24,7 @@ import org.example.coursemanagementsystem.util.Role;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -31,9 +42,22 @@ public class User {
     @Column(nullable = false, length = 20)
     Role role;
 
-    @Builder.Default
-    boolean isFirstLogin = true;
+    @Column(length = 500)
+    String photoUrl;
 
+    @Column(nullable = false)
     @Builder.Default
-    boolean isActive = true;
+    Boolean isFirstLogin = true;
+
+    @Column(nullable = false)
+    @Builder.Default
+    Boolean isActive = true;
+
+    @CreationTimestamp
+    @Column(updatable = false)
+    LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    LocalDateTime updatedAt;
 }
+

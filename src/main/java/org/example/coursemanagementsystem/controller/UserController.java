@@ -18,34 +18,32 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN') or (hasRole('STUDENT') and #id == principal.id) or (hasRole('TEACHER') and #id == principal.id)")
+    @PreAuthorize("hasRole('ADMIN') or #id == principal")
     public ResponseEntity<ApiResponse<UserBaseResponse>> getUserById(@PathVariable Long id) {
-        UserBaseResponse response = userService.getUserById(id);
-        return ResponseEntity.ok(ApiResponse.success(response));
+        return ResponseEntity.ok(ApiResponse.success(userService.getUserById(id)));
     }
 
     @GetMapping("/email/{email}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ApiResponse<UserBaseResponse>> getUserByEmail(@PathVariable String email) {
-        UserBaseResponse response = userService.getUserByEmail(email);
-        return ResponseEntity.ok(ApiResponse.success(response));
+    public ResponseEntity<ApiResponse<UserBaseResponse>> getUserByEmail(
+            @PathVariable String email) {
+        return ResponseEntity.ok(ApiResponse.success(userService.getUserByEmail(email)));
     }
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<List<UserBaseResponse>>> getAllUsers() {
-        List<UserBaseResponse> response = userService.getAllUsers();
-        return ResponseEntity.ok(ApiResponse.success(response));
+        return ResponseEntity.ok(ApiResponse.success(userService.getAllUsers()));
     }
 
-    @PutMapping("/{id}/deactivate")
+    @PatchMapping("/{id}/deactivate")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<Void>> deactivateUser(@PathVariable Long id) {
         userService.deactivateUser(id);
         return ResponseEntity.ok(ApiResponse.success(null));
     }
 
-    @PutMapping("/{id}/activate")
+    @PatchMapping("/{id}/activate")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<Void>> activateUser(@PathVariable Long id) {
         userService.activateUser(id);

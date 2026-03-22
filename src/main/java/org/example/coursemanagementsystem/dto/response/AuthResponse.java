@@ -1,6 +1,5 @@
 package org.example.coursemanagementsystem.dto.response;
 
-
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.example.coursemanagementsystem.util.Role;
@@ -11,14 +10,10 @@ import org.example.coursemanagementsystem.util.Role;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AuthResponse {
-
     String accessToken;
-
     String refreshToken;
-
     Role role;
-
-    boolean isFirstLogin;
-
+    Boolean isFirstLogin;
     Long userId;
+    String displayName;
 }

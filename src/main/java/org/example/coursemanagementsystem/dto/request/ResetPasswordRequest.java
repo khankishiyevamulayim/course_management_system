@@ -12,12 +12,12 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PasswordUpdateRequest {
+public class ResetPasswordRequest {
 
-    @NotBlank(message = "Köhnə şifrə mütləqdir")
-    String oldPassword;
+    @NotBlank(message = "Token boş ola bilməz")
+    String token;
 
-    @NotBlank(message = "Yeni şifrə mütləqdir")
+    @NotBlank(message = "Yeni şifrə boş ola bilməz")
     @Size(min = 8, max = 20, message = "Şifrə 8-20 simvol aralığında olmalıdır")
     @Pattern(
             regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!]).*$",
@@ -28,7 +28,7 @@ public class PasswordUpdateRequest {
     @NotBlank(message = "Şifrə təkrarı boş ola bilməz")
     String confirmPassword;
 
-    @AssertTrue(message = "Yeni şifrələr uyğun deyil")
+    @AssertTrue(message = "Şifrələr uyğun deyil")
     public boolean isPasswordMatching() {
         return newPassword != null && newPassword.equals(confirmPassword);
     }

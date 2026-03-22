@@ -12,7 +12,10 @@ public class StudentProfileResponse {
     Long id;
     String name;
     String surname;
+    String fatherName;
     String email;
     String studentNumber;
     String profileImage;
+    String enrolledCourse;
+    Double gpa;
 }

@@ -6,14 +6,9 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserCreatedEvent {
+public class ForgotPasswordEvent {
     private Long userId;
     private String email;
-    private String finCode;
-    private org.example.coursemanagementsystem.util.Role role;
-    private String name;
-    private String surname;
-
     @ToString.Exclude
     private String otp;
 }

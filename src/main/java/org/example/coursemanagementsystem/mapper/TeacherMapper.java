@@ -11,6 +11,7 @@ public interface TeacherMapper {
 
     @Mapping(target = "user", ignore = true)
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "profileImage", source = "photoUrl")
     Teacher toEntity(TeacherRegistrationRequest request);
 
     @Mapping(source = "user.email", target = "email")

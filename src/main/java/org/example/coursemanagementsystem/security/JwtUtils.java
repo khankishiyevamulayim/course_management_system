@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
+import java.util.Base64;
 import java.util.Date;
 
 @Slf4j
@@ -24,60 +25,43 @@ public class JwtUtils {
     private long refreshTokenExpirationMs;
 
     private Key key() {
-        return Keys.hmacShaKeyFor(jwtSecret.getBytes());
+        return Keys.hmacShaKeyFor(Base64.getDecoder().decode(jwtSecret));
     }
 
     public String generateAccessToken(User user) {
         Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + accessTokenExpirationMs);
-
         return Jwts.builder()
                 .setSubject(user.getEmail())
                 .claim("userId", user.getId())
                 .claim("role", user.getRole().name())
                 .setIssuedAt(now)
-                .setExpiration(expiryDate)
+                .setExpiration(new Date(now.getTime() + accessTokenExpirationMs))
                 .signWith(key(), SignatureAlgorithm.HS512)
                 .compact();
     }
 
+    // FIX: Refresh token — daha az claim (role yoxdur)
     public String generateRefreshToken(User user) {
         Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + refreshTokenExpirationMs);
-
         return Jwts.builder()
                 .setSubject(user.getEmail())
+                .claim("userId", user.getId())
                 .setIssuedAt(now)
-                .setExpiration(expiryDate)
+                .setExpiration(new Date(now.getTime() + refreshTokenExpirationMs))
                 .signWith(key(), SignatureAlgorithm.HS512)
                 .compact();
     }
 
     public String getEmailFromToken(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(key())
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+        return getClaims(token).getSubject();
     }
 
     public Long getUserIdFromToken(String token) {
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(key())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-        return claims.get("userId", Long.class);
+        return getClaims(token).get("userId", Long.class);
     }
 
     public String getRoleFromToken(String token) {
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(key())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-        return claims.get("role", String.class);
+        return getClaims(token).get("role", String.class);
     }
 
     public boolean validateToken(String token) {
@@ -95,4 +79,13 @@ public class JwtUtils {
         }
         return false;
     }
+
+    private Claims getClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
 }
+

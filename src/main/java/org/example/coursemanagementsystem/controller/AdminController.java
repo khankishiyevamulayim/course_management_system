@@ -40,17 +40,18 @@ public class AdminController {
     }
 
     @GetMapping("/users/role/{role}")
-    public ResponseEntity<ApiResponse<List<UserBaseResponse>>> getUsersByRole(@PathVariable String role) {
+    public ResponseEntity<ApiResponse<List<UserBaseResponse>>> getUsersByRole(
+            @PathVariable String role) {
         return ResponseEntity.ok(ApiResponse.success(adminService.getUsersByRole(role)));
     }
 
-    @PutMapping("/users/{id}/activate")
+    @PatchMapping("/users/{id}/activate")
     public ResponseEntity<ApiResponse<Void>> activateUser(@PathVariable Long id) {
         adminService.activateUser(id);
         return ResponseEntity.ok(ApiResponse.success(null));
     }
 
-    @PutMapping("/users/{id}/deactivate")
+    @PatchMapping("/users/{id}/deactivate")
     public ResponseEntity<ApiResponse<Void>> deactivateUser(@PathVariable Long id) {
         adminService.deactivateUser(id);
         return ResponseEntity.ok(ApiResponse.success(null));
@@ -62,8 +63,10 @@ public class AdminController {
         return ResponseEntity.ok(ApiResponse.success(null));
     }
 
-    @PutMapping("/users/{id}/role")
-    public ResponseEntity<ApiResponse<Void>> changeUserRole(@PathVariable Long id, @RequestParam String role) {
+    @PatchMapping("/users/{id}/role")
+    public ResponseEntity<ApiResponse<Void>> changeUserRole(
+            @PathVariable Long id,
+            @RequestParam String role) {
         adminService.changeUserRole(id, role);
         return ResponseEntity.ok(ApiResponse.success(null));
     }

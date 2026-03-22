@@ -18,24 +18,25 @@ public class StudentController {
     private final StudentService studentService;
 
     @GetMapping("/profile/{studentId}")
-    @PreAuthorize("hasRole('STUDENT') and #studentId == principal.id or hasRole('ADMIN')")
-    public ResponseEntity<ApiResponse<StudentProfileResponse>> getStudentProfile(@PathVariable Long studentId) {
-        StudentProfileResponse response = studentService.getStudentProfile(studentId);
-        return ResponseEntity.ok(ApiResponse.success(response));
+    @PreAuthorize("(hasRole('STUDENT') and #studentId == principal) or hasRole('ADMIN')")
+    public ResponseEntity<ApiResponse<StudentProfileResponse>> getStudentProfile(
+            @PathVariable Long studentId) {
+        return ResponseEntity.ok(ApiResponse.success(
+                studentService.getStudentProfile(studentId)));
     }
 
     @GetMapping("/number/{studentNumber}")
     @PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER')")
-    public ResponseEntity<ApiResponse<StudentProfileResponse>> getStudentByNumber(@PathVariable String studentNumber) {
-        StudentProfileResponse response = studentService.getStudentByNumber(studentNumber);
-        return ResponseEntity.ok(ApiResponse.success(response));
+    public ResponseEntity<ApiResponse<StudentProfileResponse>> getStudentByNumber(
+            @PathVariable String studentNumber) {
+        return ResponseEntity.ok(ApiResponse.success(
+                studentService.getStudentByNumber(studentNumber)));
     }
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<List<StudentProfileResponse>>> getAllStudents() {
-        List<StudentProfileResponse> response = studentService.getAllStudents();
-        return ResponseEntity.ok(ApiResponse.success(response));
+        return ResponseEntity.ok(ApiResponse.success(studentService.getAllStudents()));
     }
 
     @DeleteMapping("/{studentId}")
@@ -45,3 +46,4 @@ public class StudentController {
         return ResponseEntity.ok(ApiResponse.success(null));
     }
 }
+

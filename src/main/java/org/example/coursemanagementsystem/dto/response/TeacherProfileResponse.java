@@ -12,6 +12,7 @@ public class TeacherProfileResponse {
     Long id;
     String name;
     String surname;
+    String fatherName;
     String email;
     String specialization;
     String profileImage;
