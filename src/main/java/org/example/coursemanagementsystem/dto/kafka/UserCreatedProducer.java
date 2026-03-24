@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class UserCreatedProducer {
 
-    @Value("${kafka.topics.user-created}")
+    @Value("${kafka.topics.user-created}")//yml-dan goturur
     private String userCreatedTopic;
 
     @Value("${kafka.topics.forgot-password}")

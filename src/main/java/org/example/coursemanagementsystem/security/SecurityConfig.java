@@ -49,7 +49,6 @@ public class SecurityConfig {
                                 "/api/auth/reset-password"
                         ).permitAll()
 
-                        // FIX: register endpointləri yalnız ADMIN üçün — dizayna uyğun
                         .requestMatchers(
                                 "/api/auth/register/student",
                                 "/api/auth/register/teacher"
@@ -57,7 +56,6 @@ public class SecurityConfig {
 
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
-                        // FIX: teacher profilinə STUDENT da baxa bilər (academic context)
                         .requestMatchers("/api/teachers/**").hasAnyRole("ADMIN", "TEACHER", "STUDENT")
 
                         .requestMatchers("/api/students/**").hasAnyRole("ADMIN", "TEACHER", "STUDENT")

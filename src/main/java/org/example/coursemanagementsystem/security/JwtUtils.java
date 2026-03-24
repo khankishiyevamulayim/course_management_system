@@ -40,7 +40,6 @@ public class JwtUtils {
                 .compact();
     }
 
-    // FIX: Refresh token — daha az claim (role yoxdur)
     public String generateRefreshToken(User user) {
         Date now = new Date();
         return Jwts.builder()

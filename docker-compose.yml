@@ -6,7 +6,7 @@ services:
     container_name: course-management-postgres
     environment:
       POSTGRES_DB: course_management_db
-      POSTGRES_USER: course_management_db
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 1234
     ports:
       - "5432:5432"

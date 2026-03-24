@@ -18,7 +18,7 @@ import java.util.Map;
 @Configuration
 public class KafkaConfig {
 
-    @Value("${spring.kafka.bootstrap-servers}")
+    @Value("${spring.kafka.bootstrap-servers}")//kafkanin unvani
     private String bootstrapServers;
 
     private Map<String, Object> baseConfig() {
@@ -50,3 +50,5 @@ public class KafkaConfig {
         return new KafkaTemplate<>(forgotPasswordProducerFactory());
     }
 }
+//producer mesaji nece hazirlayacagini bilir
+//template qaydalarla mesajı götürür və Kafkaya çatdırır

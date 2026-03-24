@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Table(
         name = "users",
         indexes = {
-                @Index(name = "idx_user_email",   columnList = "email"),
+                @Index(name = "idx_user_email",   columnList = "email"),//istifadecinin tez tapilmasina komek edir
                 @Index(name = "idx_user_fin_code", columnList = "fin_code")
         }
 )

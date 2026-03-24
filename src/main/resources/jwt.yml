@@ -1,4 +1,4 @@
 jwt:
-  secret: ${JWT_SECRET}
-  access-token-expiration: 86400000    # 1 gün
-  refresh-token-expiration: 604800000  # 7 gün
+  secret: 3CgnidGHan69ADFmet+66zpAt4+SEqPbX8Ny90yteow=
+  access-token-expiration: 86400000
+  refresh-token-expiration: 604800000

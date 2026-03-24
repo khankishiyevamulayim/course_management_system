@@ -34,7 +34,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String roleHeader   = request.getHeader("X-User-Role");
 
             if (StringUtils.hasText(userIdHeader) && StringUtils.hasText(roleHeader)) {
-                // FIX: NumberFormatException ayrıca handle edilir
                 Long userId;
                 try {
                     userId = Long.parseLong(userIdHeader);

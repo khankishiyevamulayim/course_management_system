@@ -3,15 +3,20 @@ spring:
     import:
       - database.yml
       - redis.yml
-      - mail.yml
       - jwt.yml
+
   kafka:
     bootstrap-servers: localhost:9092
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       properties:
-        spring.json.add.type.headers: false  # KafkaConfig-dəki ilə eyni effekt
+        spring.json.add.type.headers: false
+
+kafka:
+  topics:
+    user-created: user-created
+    forgot-password: forgot-password
 
 server:
   port: 8081

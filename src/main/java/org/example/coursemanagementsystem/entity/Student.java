@@ -34,7 +34,7 @@ public class Student {
     String profileImage;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
+    @MapsId//user id-si nedirse o olur
     @JoinColumn(name = "user_id")
     User user;
 }
