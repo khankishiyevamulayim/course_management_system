@@ -67,7 +67,6 @@ public class AuthServiceImpl implements AuthService {
         user = userRepository.save(user);
 
         Student student = studentMapper.toEntity(request);
-        // FIX: studentNumber service-də generate edilir
         student.setStudentNumber(StudentNumberGenerator.generate());
         student.setUser(user);
         studentRepository.save(student);
@@ -179,7 +178,6 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void logout(String refreshToken) {
-        // FIX: logout — Redis-dən token silinir
         if (jwtUtils.validateToken(refreshToken)) {
             Long userId = jwtUtils.getUserIdFromToken(refreshToken);
             redisTemplate.delete(refreshTokenKey(userId));
@@ -190,7 +188,6 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public void verifyOtpAndSetPassword(String email, String otp, String newPassword) {
-        // FIX: validateAndClearOtp — OTP yoxlanılır VƏ silinir
         if (!otpService.validateAndClearOtp(email, otp)) {
             throw new OtpExpiredException("OTP kodu yanlış və ya vaxtı keçib");
         }
@@ -241,7 +238,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public void resetPassword(String token, String newPassword, String confirmPassword) {
-        // FIX: confirmPassword yoxlaması əvvəl edilir
+
         if (!newPassword.equals(confirmPassword)) {
             throw new PasswordMismatchException("Şifrələr uyğun deyil");
         }

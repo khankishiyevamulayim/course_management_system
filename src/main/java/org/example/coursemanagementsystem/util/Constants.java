@@ -20,8 +20,6 @@ public class Constants {
     public static final String SUCCESS_MESSAGE="success message";
 
 
-        public static final String USER_CREATED_TOPIC    = "user-created";
-        public static final String FORGOT_PASSWORD_TOPIC = "forgot-password";
 
 
 }
